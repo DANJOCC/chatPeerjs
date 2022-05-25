@@ -4,14 +4,15 @@ const{v4:uuidV4} = require('uuid')
 
 router.get('/', (req, res)=>{
     res.render('inicio',{title:'inicio'})
+   
 })
 
-router.get('start', (req, res)=>{
-    res.redirect(`start/${uuidV4}`,)
+router.get('/room', (req, res)=>{
+    res.redirect(`/room/${uuidV4()}`)
 })
 
-router.get('start/:room', (req, res)=>{
-    res.redirect('room', {roomId:req.params.room})
+router.get('/room/:room', (req, res)=>{
+    res.render('room', {roomId:req.params.room})
 })
 
 module.exports=router
