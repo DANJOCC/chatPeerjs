@@ -1,3 +1,9 @@
+const socket = io('/')
+const myPeer = new Peer()
+
+
+
+
 const mirror=document.getElementById("mirror")
 const myVideo=document.createElement('video')
 myVideo.muted = true
@@ -9,9 +15,34 @@ function addVideoStream(video, stream){
     mirror.append(video)}
 
 
+function connectToNewUser(userId, stream) {
+        const call = myPeer.call(userId, stream)
+        const video = document.createElement('video') 
+        call.on('stream', userVideoStream => {
+            addVideoStream(video, userVideoStream)
+        })
+        call.on('close', () => {
+            video.remove()
+        })
+    }
+
 navigator.mediaDevices.getUserMedia({
-    video: { width: 1280, height: 720 },
+    video: true,
     audio:true
 }).then(stream=>{
     addVideoStream(myVideo,stream)
+
+    myPeer.on('call', call => { 
+        call.answer(stream) 
+        const video = document.createElement('video')
+        call.on('stream', userVideoStream => { 
+            addVideoStream(video, userVideoStream)
+        })
+    })
+
+
+    socket.on('user-connected', userId => { // If a new user connect
+        connectToNewUser(userId, stream) 
+    })
+
 })

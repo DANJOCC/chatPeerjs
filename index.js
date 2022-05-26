@@ -1,9 +1,9 @@
 const http=require("http")
 const path=require("path")
-const {socketServer, Socket} =require('socket.io')
+const {Server} =require('socket.io')
 const express=require("express")
 const app=express()
-const io=socketServer(server)
+
 const {newRoom,getUsers}=require('./controllers/rooms.controller')
 
 app.set('views',path.join(__dirname,"public"))
@@ -17,6 +17,7 @@ app.use(express.static(path.join(__dirname,"public")))
 app.use(require('./routes/ruta.routes'))
 
 const server=http.createServer(app)
+const io=new Server(server)
 
 
 io.on('connection', socket=>{

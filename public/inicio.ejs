@@ -9,8 +9,11 @@
 </head>
 <body>
     <div id="botonera">
-        <button id="start"><a href="/room">iniciar room</a></button>
-        <button id="join"><a href="/">unirse a room</a></button>
+        <form id="formulario" action="join" method="get">
+            <input type="text" name="room" placeholder="Ingrese codigo de sala">
+            <button type="submit">Unirse a sala</button>
+        </form>
+        <button id="start"><a href="/room">Crear Sala</a></button>
     </div>
 </body>
 </html>
