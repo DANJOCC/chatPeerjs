@@ -4,7 +4,7 @@ const {Server} =require('socket.io')
 const express=require("express")
 const app=express()
 
-const {newRoom,getUsers}=require('./controllers/rooms.controller')
+const {newRoom,getUsers, roomsIsEmpty,thereIsAroom}=require('./controllers/rooms.controller')
 
 app.set('views',path.join(__dirname,"public"))
 app.set('view engine','ejs');
@@ -22,8 +22,8 @@ const io=new Server(server)
 
 io.on('connection', socket=>{
     socket.on('join-room', (roomId, userId) => {
-        socket.join(roomId)  // Join the room
-        socket.broadcast.emit('user-connected', userId) 
+
+            socket.join(roomId)
    
      
      socket.on('disconnect', () => {

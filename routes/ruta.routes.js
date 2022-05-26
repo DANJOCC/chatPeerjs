@@ -12,8 +12,7 @@ router.get('/', (req, res)=>{
 })
 
 router.get('/join', (req, res)=>{
-    console.log(req.query.room)
-    res.redirect(`/room/${uuidV4()}`)
+    res.redirect(`/room/${req.query.room}`)
 })
 
 router.get('/room', (req, res)=>{

@@ -2,11 +2,11 @@ const socket = io('/')
 const myPeer = new Peer()
 
 
-
-
 const mirror=document.getElementById("mirror")
 const myVideo=document.createElement('video')
 myVideo.muted = true
+
+
 function addVideoStream(video, stream){
     video.srcObject = stream 
     video.addEventListener('loadedmetadata', () => { // Play the video as it loads
@@ -45,4 +45,12 @@ navigator.mediaDevices.getUserMedia({
         connectToNewUser(userId, stream) 
     })
 
+    socket.on('user-disconnected', userId => {
+        console.log(userId)
+    })
+
+})
+
+myPeer.on('open', id => {
+    socket.emit('join-room', ROOM_ID, id)
 })
