@@ -19,12 +19,18 @@ function connectToNewUser(userId, stream) {
         const call = myPeer.call(userId, stream)
         const video = document.createElement('video') 
         call.on('stream', userVideoStream => {
+            console.log("recibiendo stream") 
             addVideoStream(video, userVideoStream)
         })
         call.on('close', () => {
             video.remove()
         })
     }
+
+myPeer.on('open', id => {
+        socket.emit('join-room', ROOM_ID, id)
+        console.log("peer establecido")
+})
 
 navigator.mediaDevices.getUserMedia({
     video: true,
@@ -35,13 +41,15 @@ navigator.mediaDevices.getUserMedia({
     myPeer.on('call', call => { 
         call.answer(stream) 
         const video = document.createElement('video')
-        call.on('stream', userVideoStream => { 
+        call.on('stream', userVideoStream => {
+            
             addVideoStream(video, userVideoStream)
         })
     })
 
 
-    socket.on('user-connected', userId => { // If a new user connect
+    socket.on('user-connected', userId => {
+        console.log("usuario conectado") // If a new user connect
         connectToNewUser(userId, stream) 
     })
 
@@ -51,6 +59,4 @@ navigator.mediaDevices.getUserMedia({
 
 })
 
-myPeer.on('open', id => {
-    socket.emit('join-room', ROOM_ID, id)
-})
+
